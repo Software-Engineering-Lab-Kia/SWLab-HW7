@@ -65,3 +65,14 @@ depends_on: اطمینان از این که سرویس وب پس از سرویس
 
 
 environment: تنظیم متغیرهای محیطی برای جنگو.
+
+
+
+
+
+دستورات مربوط به داکر و کانتینر و image:
+![Screenshot from 2024-05-28 19-44-20](https://github.com/kiarashk8128/SWLab-HW7/assets/82291200/113a0305-066e-403a-88ea-c41e50aa9634)
+
+
+
+![Screenshot from 2024-05-28 19-44-41](https://github.com/kiarashk8128/SWLab-HW7/assets/82291200/d8ce32af-6527-401b-9741-5d8e3bf9a202)
