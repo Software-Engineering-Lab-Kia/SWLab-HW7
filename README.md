@@ -1,4 +1,5 @@
 جدول کانبان این آزمایش را می‌سازیم و تسک‌ها را در بک‌لاگ قرار می‌دهیم.
+
 ![](https://github.com/kiarashk8128/SWLab-HW7/blob/main/images/photo_2024-05-22_15-45-43.jpg?raw=true)
 
 
