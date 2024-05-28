@@ -1,52 +1,67 @@
-# Notes project
+Dockerfile
 
-## Requirements
-- Python3
-- Postgres
 
-## How to run
+FROM python:3.9: مشخص می‌کند که از ایمیج پایتون ۳.۹ به عنوان پایه استفاده شود.
 
-### Setup virtual environment
 
-#### Create venv
-```
-python -m venv ./venv
-```
+ENV PYTHONDONTWRITEBYTECODE 1: جلوگیری از نوشتن فایل‌های pyc.
 
-#### Install requirements
-```
-python -m pip install -r requirements.txt
-```
 
-#### Activate venv
-```
-source ./venv/bin/activate
-```
+ENV PYTHONUNBUFFERED 1: ارسال خروجی پایتون به ترمینال بدون بافر.
 
-### Setup database
-1. Create an instance of postgres database
-2. Make migrations
-    ```
-    python manage.py makemigrations
-    ```
-3. Migrate
-    ```
-    python manage.py migrate
-    ```
 
-### Create an admin
-```
-python manage.py createsuperuser
-```
+WORKDIR /code: تنظیم دایرکتوری کاری درون کانتینر به /code.
 
-## Important end-points
-```
-users/login/ --> login a user
-users/me/ --> get information of logged-in user
-users/create/ --> create a user
-users/<id>/delete/ --> delete a user
-notes/ --> list all notes of current user
-notes/<id>/ --> get details of a note
-notes/create/ --> create a note
-notes/<id>/delete/ --> delete a note
-```
+
+COPY requirements.txt /code/: کپی کردن فایل requirements.txt به داخل کانتینر.
+
+
+RUN pip install --no-cache-dir -r requirements.txt: نصب وابستگی‌های پایتون.
+
+
+COPY . /code/: کپی کردن باقی کدهای برنامه به داخل کانتینر.
+
+
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]: اجرای سرور توسعه جنگو.
+
+
+docker-compose.yml
+
+
+version: '3.8': مشخص کردن نسخه Docker Compose.
+
+
+services: تعریف سرویس‌ها (وب و پایگاه‌داده) که Docker Compose مدیریت خواهد کرد.
+
+
+db: تعریف سرویس پایگاه‌داده PostgreSQL.
+
+
+image: postgres:13: استفاده از ایمیج رسمی PostgreSQL نسخه ۱۳.
+
+
+volumes: مونت کردن یک ولوم برای نگهداری داده‌ها.
+
+
+environment: تنظیم متغیرهای محیطی برای PostgreSQL.
+
+
+web: تعریف سرویس وب جنگو.
+
+
+build: ساخت ایمیج با استفاده از Dockerfile.
+
+
+command: اجرای سرور توسعه جنگو.
+
+
+volumes: مونت کردن دایرکتوری جاری به /code در کانتینر.
+
+
+ports: نگاشت پورت ۸۰۰۰ روی میزبان به پورت ۸۰۰۰ در کانتینر.
+
+
+depends_on: اطمینان از این که سرویس وب پس از سرویس db شروع می‌شود.
+
+
+environment: تنظیم متغیرهای محیطی برای جنگو.
