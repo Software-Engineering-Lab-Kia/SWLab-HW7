@@ -1,52 +1,28 @@
-# Notes project
+Dockerfile
+Dockerfile فایلی است که شامل دستورات لازم برای ساخت یک ایمیج داکر می‌باشد. این فایل مشخص می‌کند که چه نرم‌افزارها و تنظیماتی باید در کانتینر شما وجود داشته باشد.
 
-## Requirements
-- Python3
-- Postgres
+بخش‌های Dockerfile:
+FROM python:3.9:
 
-## How to run
+این خط پایه‌ی ایمیج داکر را مشخص می‌کند. در اینجا از ایمیج رسمی پایتون نسخه ۳.۹ استفاده شده است.
+ENV PYTHONDONTWRITEBYTECODE 1:
 
-### Setup virtual environment
+این دستور از نوشتن فایل‌های pyc جلوگیری می‌کند.
+ENV PYTHONUNBUFFERED 1:
 
-#### Create venv
-```
-python -m venv ./venv
-```
+این دستور خروجی پایتون را بدون بافر به ترمینال ارسال می‌کند.
+WORKDIR /code:
 
-#### Install requirements
-```
-python -m pip install -r requirements.txt
-```
+این خط دایرکتوری کاری درون کانتینر را به /code تنظیم می‌کند.
+COPY requirements.txt /code/:
 
-#### Activate venv
-```
-source ./venv/bin/activate
-```
+این دستور فایل requirements.txt را از سیستم محلی به دایرکتوری /code درون کانتینر کپی می‌کند.
+RUN pip install --no-cache-dir -r requirements.txt:
 
-### Setup database
-1. Create an instance of postgres database
-2. Make migrations
-    ```
-    python manage.py makemigrations
-    ```
-3. Migrate
-    ```
-    python manage.py migrate
-    ```
+این خط پکیج‌های پایتون موجود در requirements.txt را نصب می‌کند.
+COPY . /code/:
 
-### Create an admin
-```
-python manage.py createsuperuser
-```
+این دستور باقی کدهای برنامه را به دایرکتوری /code درون کانتینر کپی می‌کند.
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]:
 
-## Important end-points
-```
-users/login/ --> login a user
-users/me/ --> get information of logged-in user
-users/create/ --> create a user
-users/<id>/delete/ --> delete a user
-notes/ --> list all notes of current user
-notes/<id>/ --> get details of a note
-notes/create/ --> create a note
-notes/<id>/delete/ --> delete a note
-```
+این خط فرمانی است که هنگام راه‌اندازی کانتینر اجرا می‌شود. در اینجا، سرور توسعه جنگو روی پورت ۸۰۰۰ اجرا می‌شود.
